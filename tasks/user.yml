@@ -55,7 +55,7 @@
 # TODO: Make it possible to append Authorized Keys from the definition item
 - name: include Authorized Keys related task
   include: authorized_key.yml
-  with_items: "{{ selection_item.authorized_keys if selection_item.authorized_keys is defined else _definition_item.authorized_keys}}"
+  with_items: "{{ selection_item.authorized_keys if selection_item.authorized_keys is defined else _definition_item.authorized_keys }}"
   loop_control:
     loop_var: authorized_keys_item
   when: selection_item.authorized_keys is defined or _definition_item.authorized_keys is defined

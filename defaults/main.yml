@@ -1,0 +1,85 @@
+---
+# defaults file for khnixxo.os_users_groups
+
+#
+# Users and Groups Definitions
+#
+
+# List of Ansible group module
+khnixxo_os_groups_definition: []
+# - name: groupA
+#   gid: 1001
+#   local: yes
+#   system: yes
+#   state: present
+#
+# - name: groupB
+#   gid: 1002
+#   local: yes
+#   system: yes
+#   state: present
+
+# List of Ansible user module plus the authorized_keys property that is a list of Ansible authorized_key module
+khnixxo_os_users_definition: []
+#- name: userA
+#  comment:
+#
+#  password:
+#  update_password:
+#  expires:
+#
+#  uid:
+#  group:
+#  groups:
+#    - groupA
+#    - groupB
+#  append:
+#
+#  local:
+#  system:
+#  seuser:
+#  shell:
+#
+#  generate_ssh_key:
+#  ssh_key_bits:
+#  ssh_key_comment:
+#  ssh_key_file:
+#  ssh_key_passphrase:
+#  ssh_key_type:
+#
+#  home:
+#  create_home:
+#  move_home:
+#  skeleton:
+#
+#  force:
+#  remove:
+#  state:
+#
+#  authorized_keys: []
+
+
+#
+# User and Groups Selections
+#
+
+# List of groups taken from the definition list that will be managed on the host.
+# It is possible to override a definition property here to apply it on a specific host.
+# The overriding value will replace the one from definition.
+# Any property that is not overridden will be taken from the definition.
+khnixxo_os_groups_selection: []
+# - name: groupA
+# - name: groupB
+#   state: absent
+
+
+# List of users taken from the definition list that will be managed on the host.
+# It is possible to override a definition property here to apply it on a specific host.
+# The overriding value will replace the one from definition.
+# Any property that is not overridden will be taken from the definition.
+khnixxo_os_users_selection: []
+# - name: userA
+#   groups:
+#     - groupA
+
+

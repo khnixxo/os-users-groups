@@ -1,0 +1,23 @@
+galaxy_info:
+  author: Kevin Hudon (khnixxo)
+  description: Managing Operating Sytems Users and Groups in a flexible way across multiple host having different needs.
+
+  license: MIT
+
+  min_ansible_version: 1.2
+
+  platforms:
+    - name: Ubuntu
+      versions:
+       - 18.04
+
+  galaxy_tags:
+    - system
+    - user
+    - group
+    - management
+    - authorized
+    - key
+    - ubuntu
+
+dependencies: []

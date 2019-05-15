@@ -1,0 +1,13 @@
+---
+
+- name: "Managing User Account '{{ selection_item.name }}' Authorized Keys"
+  authorized_key:
+    user: "{{ selection_item.name }}"
+    comment: "{{ authorized_keys_item.comment | default(omit) }}"
+    exclusive: "{{ authorized_keys_item.exclusive | default(omit) }}"
+    key: "{{ authorized_keys_item.key }}"
+    key_options: "{{ authorized_keys_item.key_options | default(omit) }}"
+    manage_dir: "{{ authorized_keys_item.manage_dir | default(omit) }}"
+    path: "{{ authorized_keys_item.path | default(omit) }}"
+    state: "{{ authorized_keys_item.state | default(omit) }}"
+    validate_certs: "{{ authorized_keys_item.validate_certs | default(omit) }}"

@@ -1,0 +1,22 @@
+---
+
+- name: Search for the group in the group definition list
+  set_fact:
+    _definition_item: "{{ khnixxo_os_groups_definition | selectattr('name', 'equalto', selection_item.name) | list | first | default('NOT_FOUND') }}"
+
+- name: Make sure the group definition exists
+  fail:
+    msg: "The group '{{ selection_item.name }}' must exist in the group definition list (khnixxo_os_groups_definition)"
+  when: _definition_item == "NOT_FOUND"
+
+  #
+  # To assign properties, this will first check if a value was overridden in the selection list, if not, it will use the 
+  # value from the definition list. Finally it will fall back to the module default value.
+  #
+- name: Managing Groups
+  group:
+    name: "{{ selection_item.name }}"
+    gid: "{{ selection_item.gid if selection_item.gid is defined else _definition_item.gid | default(omit) }}"
+    local: "{{ selection_item.local if selection_item.local is defined else _definition_item.local | default(omit) }}"
+    system: "{{ selection_item.system if selection_item.system is defined else _definition_item.system | default(omit) }}"
+    state: "{{ selection_item.state if selection_item.state is defined else _definition_item.state }}"

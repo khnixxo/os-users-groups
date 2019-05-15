@@ -1,0 +1,62 @@
+---
+- name: Search for the user account in the account definition list
+  set_fact:
+    _definition_item: "{{ khnixxo_os_users_definition | selectattr('name', 'equalto', selection_item.name) | list | first | default('NOT_FOUND') }}"
+
+- debug:
+    msg: "{{ _definition_item }}"
+
+- name: Make sure the user account definition exists
+  fail:
+    msg: "The user '{{ selection_item.name }}' must exist in the user accounts definition list (khnixxo_os_users_selection)"
+  when: _definition_item == "NOT_FOUND"
+
+  #
+  # To assign properties, this will first check if a value was overridden in the selection list, if not, it will use the 
+  # value from the definition list. Finally it will fall back to the module default value.
+  #
+  # TODO: Make it possible to append groups from the definition item
+- name: "Managing User {{ selection_item.name }}"
+  user:
+    name: "{{ selection_item.name }}"
+    comment: "{{ selection_item.comment if selection_item.comment is defined else _definition_item.comment | default(omit) }}"
+
+    password: "{{ selection_item.password if selection_item.password is defined else _definition_item.password | default(omit) }}"
+    update_password: "{{ selection_item.update_password if selection_item.update_password is defined else _definition_item.update_password | default(omit) }}"
+    expires: "{{ selection_item.expires if selection_item.expires is defined else _definition_item.expires | default(omit) }}"
+
+    uid: "{{ selection_item.uid if selection_item.uid is defined else _definition_item.uid | default(omit) }}"
+    group: "{{ selection_item.group if selection_item.group is defined else _definition_item.group | default(omit) }}"
+    groups: "{{ selection_item.groups if selection_item.groups is defined else _definition_item.groups | default(omit) }}"
+    append: "{{ selection_item.append if selection_item.append is defined else _definition_item.append | default(omit) }}"
+
+    local: "{{ selection_item.local if selection_item.local is defined else _definition_item.local | default(omit) }}"
+    system: "{{ selection_item.system if selection_item.system is defined else _definition_item.system | default(omit) }}"
+    seuser: "{{ selection_item.seuser if selection_item.seuser is defined else _definition_item.seuser | default(omit) }}"
+    shell: "{{ selection_item.shell if selection_item.shell is defined else _definition_item.shell | default(omit) }}"
+
+    generate_ssh_key: "{{ selection_item.generate_ssh_key if selection_item.generate_ssh_key is defined
+                        else _definition_item.generate_ssh_key | default(omit) }}"
+    ssh_key_bits: "{{ selection_item.ssh_key_bits if selection_item.ssh_key_bits is defined else _definition_item.ssh_key_bits | default(omit) }}"
+    ssh_key_comment: "{{ selection_item.ssh_key_comment if selection_item.ssh_key_comment is defined else _definition_item.ssh_key_comment | default(omit) }}"
+    ssh_key_file: "{{ selection_item.ssh_key_file if selection_item.ssh_key_file is defined else _definition_item.ssh_key_file | default(omit) }}"
+    ssh_key_passphrase: "{{ selection_item.ssh_key_passphrase if selection_item.ssh_key_passphrase is defined else _definition_item.ssh_key_passphrase | default(omit) }}"
+    ssh_key_type: "{{ selection_item.ssh_key_type if selection_item.ssh_key_type is defined else _definition_item.ssh_key_type | default(omit) }}"
+
+    home: "{{ selection_item.home if selection_item.home is defined else _definition_item.home | default(omit) }}"
+    create_home: "{{ selection_item.create_home if selection_item.create_home is defined else _definition_item.create_home | default(omit) }}"
+    move_home: "{{ selection_item.move_home if selection_item.move_home is defined else _definition_item.move_home | default(omit) }}"
+    skeleton: "{{ selection_item.skeleton if selection_item.skeleton is defined else _definition_item.skeleton | default(omit) }}"
+
+    force: "{{ selection_item.force if selection_item.force is defined else _definition_item.force | default(omit) }}"
+    remove: "{{ selection_item.remove if selection_item.remove is defined else _definition_item.remove | default(omit) }}"
+    state: "{{ selection_item.state if selection_item.state is defined else _definition_item.state | default(omit) }}"
+
+
+# TODO: Make it possible to append Authorized Keys from the definition item
+- name: include Authorized Keys related task
+  include: authorized_key.yml
+  with_items: "{{ selection_item.authorized_keys if selection_item.authorized_keys is defined else _definition_item.authorized_keys}}"
+  loop_control:
+    loop_var: authorized_keys_item
+  when: selection_item.authorized_keys is defined or _definition_item.authorized_keys is defined

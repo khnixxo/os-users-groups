@@ -35,8 +35,7 @@
     seuser: "{{ selection_item.seuser if selection_item.seuser is defined else _definition_item.seuser | default(omit) }}"
     shell: "{{ selection_item.shell if selection_item.shell is defined else _definition_item.shell | default(omit) }}"
 
-    generate_ssh_key: "{{ selection_item.generate_ssh_key if selection_item.generate_ssh_key is defined
-                        else _definition_item.generate_ssh_key | default(omit) }}"
+    generate_ssh_key: "{{ selection_item.generate_ssh_key if selection_item.generate_ssh_key is defined else _definition_item.generate_ssh_key | default(omit) }}"
     ssh_key_bits: "{{ selection_item.ssh_key_bits if selection_item.ssh_key_bits is defined else _definition_item.ssh_key_bits | default(omit) }}"
     ssh_key_comment: "{{ selection_item.ssh_key_comment if selection_item.ssh_key_comment is defined else _definition_item.ssh_key_comment | default(omit) }}"
     ssh_key_file: "{{ selection_item.ssh_key_file if selection_item.ssh_key_file is defined else _definition_item.ssh_key_file | default(omit) }}"

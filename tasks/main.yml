@@ -1,6 +1,5 @@
 ---
 # tasks file for khnixxo.os_users_groups
-
 - name: include Group related task
   include: group.yml
   with_items: "{{ khnixxo_os_groups_selection | default([]) }}"

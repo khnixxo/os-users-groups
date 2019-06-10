@@ -59,3 +59,31 @@
   loop_control:
     loop_var: authorized_keys_item
   when: selection_item.authorized_keys is defined or _definition_item.authorized_keys is defined
+
+- name: Configuring user in sudoers file
+  block:
+
+    - name: Set user sudoers file
+      template:
+        src: "{{ selection_item.sudoers_template if selection_item.sudoers_template is defined else _definition_item.sudoers_template }}"
+        dest: "/etc/sudoers.d/user_{{ selection_item.name }}_sudoers"
+        mode: 0440
+        owner: root
+        group: root
+        validate: "visudo -cf %s"
+
+    - name: Make sure /etc/sudoers reads files in /etc/sudoers.d and validate the file
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: "#includedir /etc/sudoers.d"
+        line: "#includedir /etc/sudoers.d"
+        validate: "visudo -cf %s"
+
+  when: selection_item.sudoers_template is defined or _definition_item.sudoers_template is defined
+
+- name: Remove user sudoers file
+  file:
+    path:  "/etc/sudoers.d/{{ selection_item.name }}_sudoers"
+    state: absent
+  when: selection_item.sudoers_template is not defined and _definition_item.sudoers_template is not defined

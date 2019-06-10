@@ -8,7 +8,7 @@ This role tries to achieves the following goals:
 - User and groups properties must be shared across all host. 
   - Don't repeat yourself
   - A change made on a property must take effect everywhere unless the property was overridden
-  - Shared properties does mean that same user and groups are installed everywhere
+  - Shared properties does not mean that same user and groups are installed everywhere
 - Must be able to override a specific property on a host without having to redefine the whole user/group
   - User account can have different groups in staging vs production
 - The host managed user list must be clear and simple.
